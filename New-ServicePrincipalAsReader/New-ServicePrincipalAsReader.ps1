@@ -1,5 +1,28 @@
+<#
+    .SYNOPSIS
+        New-ServicePrincipalAsReader is a PowerShell script to create a Read only Service Principal in Azure.
+        The script will write a file ([subscriptionName].azureauth) with all the parameters needed to use the Microsoft.Azure.Management.Fluent lib.
+        SECURITY: The file [subscriptionName].azureauth will contain the key for the  Service Principal.
+
+    .DESCRIPTION
+        New-ServicePrincipalAsReader is a PowerShell script to create a Read only Service Principal in Azure.
+        The script will write a file ([subscriptionName].azureauth) with all the parameters needed to use the Microsoft.Azure.Management.Fluent lib.
+        SECURITY: The file [subscriptionName].azureauth will contain the key for the  Service Principal.
+        
+    .PARAMETER subscriptionName
+        The name of the subscription to connect.
+    
+    .PARAMETER servicePrincipalName
+        The name of of the Service Principal. Default value is: logReader
+    
+    .NOTES 
+        AUTHOR: Carlos Mendible 
+        LASTEDIT: August 02, 2017 
+#>
 Param(
+    [Parameter(Mandatory = $true)]
     [string]$subscriptionName,
+    [Parameter(Mandatory = $false)]
     [string]$servicePrincipalName = "logReader"
 )
 
@@ -19,12 +42,6 @@ function Create-AesKey() {
 # Resulting file is compatible with the Microsoft.Azure.Management.Fluent lib.
 # SECURITY ALERT: Be careful with the file and its contents 
 function New-ServicePrincipalAsReader($subscriptionName, $applicationName) {
-    # Check the subsciption name
-    if (!$subscriptionName) {
-        Write-Host "Subscription name cannot be empty"
-        exit
-    }
-
     # Login to Azure
     Add-AzureRmAccount
 
